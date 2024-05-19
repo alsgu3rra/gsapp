@@ -31,11 +31,20 @@ export default function Login() {
       .catch((error) => {
         setIsLoading(false);
 
-        auth()
-          .createUserWithEmailAndPassword(email, password)
-          .catch((error) => {
-            return Alert.alert("Entrar", "Não foi possível entrar");
-          });
+        if (
+          error.code === "auth/user-not-found" ||
+          error.code === "auth/wrong-password"
+        ) {
+          return Alert.alert("Entrar", "E-mail ou senha inválida.");
+        }
+
+        if (error.code === "auth/invalid-email") {
+          auth()
+            .createUserWithEmailAndPassword(email, password)
+            .catch((error) => {
+              return Alert.alert("Entrar", "Não foi possível entrar");
+            });
+        }
       });
   }
 
