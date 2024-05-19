@@ -1,4 +1,3 @@
-import { Text } from 'react-native';
 import { useState } from 'react';
 import { Alert } from 'react-native';
 import { VStack, Select, CheckIcon } from 'native-base';
@@ -7,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Input } from './input';
 import { Button } from './button';
 import { Header } from './header';
+import { services } from './services';
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,35 +46,42 @@ export default function Register() {
   }
 
   return (
-    <VStack flex={1} p={6} bg="gray.100">
-      <Header
-        title='Solicitação'
-      />
-      <Select selectedValue={service} minWidth="200" accessibilityLabel="Choose Service" placeholder="Choose Service" _selectedItem={{
-        bg: "teal.600",
-        endIcon: <CheckIcon size="5" />
-      }} mt={1} onValueChange={itemValue => setService(itemValue)}>
-        <Select.Item label="Construção/Reforma" value="Construção/Reforma" />
+    <VStack flex={1} p={6} bg="gray.600">
+      <Header title="Nova Solicitação" />
+      <Select
+        selectedValue={service}
+        minWidth="200"
+        placeholder="Selecionar Serviço"
+        _selectedItem={{
+          bg: "white",
+          endIcon: <CheckIcon size="5" />,
+        }}
+        mt={1}
+        onValueChange={(itemValue) => setService(itemValue)}
+      >
+        {services.map((service, index) => (
+          <Select.Item label={service.name} value={service.name} />
+        ))}
       </Select>
       <Input
         onChangeText={setWhatsapp}
-        placeholder='Número do Whatsapp'
+        placeholder="Número do Whatsapp"
         mt={4}
       />
       <Input
         onChangeText={setDescription}
-        placeholder='Descrição do Serviço (Incluir Metro, Quantidade etc)'
+        placeholder="Descrição do Serviço (Incluir Metro, Quantidade etc)"
         flex={1}
         mt={5}
         multiline
-        textAlignVertical='top'
+        textAlignVertical="top"
       />
       <Button
-        title='Cadastrar'
+        title="Cadastrar"
         isLoading={isLoading}
         onPress={handleNewRegister}
         mt={5}
       />
     </VStack>
-  )
+  );
 }

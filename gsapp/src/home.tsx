@@ -62,7 +62,7 @@ export default function Home() {
   }, [statusSelected])
 
   return (
-    <VStack flex={1} pb={6} bg="white">
+    <VStack flex={1} pb={6} bg="gray.700">
       <HStack
         w="full"
         justifyContent="space-between"
@@ -78,34 +78,40 @@ export default function Home() {
         />
       </HStack>
       <VStack flex={1} px={6}>
-        <HStack w="full" mt={8} mb={4} justifyContent="space-between" alignItems="center">
-          <Heading color="gray.700">
-            Chamados
-          </Heading>
+        <HStack
+          w="full"
+          mt={8}
+          mb={4}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Heading color="gray.700">Chamados</Heading>
         </HStack>
-        {
-          isLoading ? <Loading /> : <FlatList 
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <FlatList
             data={orders}
-            keyExtractor={item => item.id}
-            renderItem={({ item }) => <Order data={item} onPress={() => handleOpenDetails(item.id)} />}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Order data={item} onPress={() => handleOpenDetails(item.id)} />
+            )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{ paddingBottom: 100 }}
             ListEmptyComponent={() => (
               <Center>
                 <ChatTeardropText size={40} color={colors.green[300]} />
                 <Text color="gray.100" fontSize="xl" mt={6} textAlign="center">
-                  Você ainda não tem {'\n'}
-                  solicitações {statusSelected === 'open' ? 'em andamento' : 'finalizadas'}
+                  Você ainda não tem {"\n"}
+                  solicitações{" "}
+                  {statusSelected === "open" ? "em andamento" : "finalizadas"}
                 </Text>
               </Center>
             )}
           />
-        }
-        <Button
-          title='Nova solicitação'
-          onPress={handleNew}
-        />
+        )}
+        <Button title="Nova solicitação" onPress={handleNew} />
       </VStack>
     </VStack>
-  )
+  );
 }
